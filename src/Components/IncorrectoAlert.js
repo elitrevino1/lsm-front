@@ -10,7 +10,7 @@ function IncorrectoAlert(props) {
             <Alert show={show} variant="danger" onClose={() => setShow(false)} dismissible className="red-alert">
                 <Alert.Heading>
                     <h2 className="red-text">
-                        <i class="fa-solid fa-circle-xmark pe-2"></i>
+                        <i className="fa-solid fa-circle-xmark pe-2"></i>
                         <span>Incorrecto</span>
                     </h2>
                 </Alert.Heading>

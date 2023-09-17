@@ -46,14 +46,13 @@ function Practica() {
                 console.error('Error al enviar el frame al servidor:', error);
             } */
 
-            // Establecer la frecuencia de envío de frames
-            setTimeout(captureFrame, 100); // Envía un frame cada 100 ms (10 cuadros por segundo)
+
+            requestAnimationFrame(captureFrame);
         }
     };
 
     useEffect(() => {
-        // Comienza la captura de frames cuando el componente se monta
-        setTimeout(captureFrame, 100);
+        requestAnimationFrame(captureFrame);
     }, []);
 
     return (
@@ -85,7 +84,7 @@ function Practica() {
                         <Webcam
                             audio={false}
                             ref={webcamRef}
-                            screenshotFormat="image/jpeg"
+                            screenshotFormat="image/png"
                             mirrored={true}
                             className="p-0"
                         />
@@ -102,7 +101,7 @@ function Practica() {
                     </Row>
                     <Row>
                         <p className="m-0 mt-3">
-                            <i class="fa-solid fa-lightbulb pe-2"></i>
+                            <i className="fa-solid fa-lightbulb pe-2"></i>
                             <span><u>¿No recuerdas cómo se hace?</u></span>
                         </p>
                     </Row>

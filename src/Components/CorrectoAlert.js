@@ -10,7 +10,7 @@ function CorrectoAlert() {
             <Alert show={true} variant="success" onClose={() => setShow(false)} dismissible className="green-alert">
                 <Alert.Heading>
                     <h2 className="green-text">
-                        <i class="fa-solid fa-circle-check pe-2"></i>
+                        <i className="fa-solid fa-circle-check pe-2"></i>
                         <span>Correcto</span>
                     </h2>
                 </Alert.Heading>
