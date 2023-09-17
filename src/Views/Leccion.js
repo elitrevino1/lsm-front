@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import PalabraCard from "../Components/PalabraCard";
 import api from "../api/route.js";
 
@@ -16,27 +16,27 @@ function Leccion() {
     const [video, setVideo] = useState();
     const [palabras, setPalabras] = useState([]);
 
-    const getPalabra = async () => {
-        try {
-            const response = await api.get(`/lecciones/${id}/${idPalabra}`);
-            setImagen(response.data.imagen64);
-            setPalabra(response.data.titulo);
-            setDefinicion(response.data.definicion);
-            setVideo(response.data.video64);
-        } catch (err) {
-            if (err.response) {
-                console.log(err.response.data);
-                console.log(err.response.status);
-                console.log(err.response.headers);
-            } else {
-                console.log(`Error: ${err.message}`);
+    useEffect(() => {
+        const getPalabra = async () => {
+            try {
+                const response = await api.get(`/lecciones/${id}/${idPalabra}`);
+                setImagen(response.data.imagen64);
+                setPalabra(response.data.titulo);
+                setDefinicion(response.data.definicion);
+                setVideo(response.data.video64);
+            } catch (err) {
+                if (err.response) {
+                    console.log(err.response.data);
+                    console.log(err.response.status);
+                    console.log(err.response.headers);
+                } else {
+                    console.log(`Error: ${err.message}`);
+                }
             }
         }
-    }
 
-    useEffect(() => {
         getPalabra();
-    }, []);
+    }, [id, idPalabra]);
 
     useEffect(() => {
         const getPalabras = async () => {
@@ -66,10 +66,10 @@ function Leccion() {
         }
 
         getPalabras();
-    }, []);
+    }, [id]);
 
     return (
-        <Container fluid>
+        <Container fluid key={idPalabra}>
             <Row className="m-5 mb-0">
                 <Col xs={12}>
                     <h1>
@@ -95,23 +95,17 @@ function Leccion() {
             </Row>
             <Row className="m-5">
                 <Col>
-                    {idPalabra != 1 && <Button className="non-cta-button" onClick={() => {
-                        setIdPalabra(idPalabra - 1);
-                        console.log(idPalabra); // truena si se lo quitas por,,, razones
-                        getPalabra();
-                        getPalabra();
+                    {idPalabra !== 1 && <Button className="non-cta-button" onClick={() => {
+                        setIdPalabra(idPalabra => idPalabra - 1);
                     }}>
                         <p className="m-0" style={{ color: "var(--text-white)" }}>
                             Previo
                         </p>
                     </Button>}
                 </Col>
-                {idPalabra != (palabras.length + 1) && <Col className="col-auto ms-auto">
+                {idPalabra !== (palabras.length + 1) && <Col className="col-auto ms-auto">
                     <Button className="cta-button" onClick={() => {
-                        setIdPalabra(idPalabra + 1);
-                        console.log(idPalabra); // truena si se lo quitas por,,, razones
-                        getPalabra();
-                        getPalabra();
+                        setIdPalabra(idPalabra => idPalabra + 1);
                     }}>
                         <p className="m-0" style={{ color: "var(--text-white)" }}>
                             Siguiente
