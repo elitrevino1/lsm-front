@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Webcam from 'react-webcam';
-import axios from 'axios';
 import CorrectoAlert from "../Components/CorrectoAlert";
 import IncorrectoAlert from "../Components/IncorrectoAlert";
 
@@ -14,8 +13,6 @@ function Practica() {
 
     let error = "Mueve el dedo índice hacia la derecha."
 
-    const videoRef = useRef(null);
-    const canvasRef = useRef(null);
     const webcamRef = useRef(null);
 
     /* useEffect(() => {
@@ -39,7 +36,7 @@ function Practica() {
 
     const captureFrame = async () => {
         if (webcamRef.current) {
-            const frame = webcamRef.current.getScreenshot();
+            //const frame = webcamRef.current.getScreenshot();
             // Envía el frame al servidor Flask
             //console.log(frame);
 
