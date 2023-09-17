@@ -103,7 +103,7 @@ function Leccion() {
                         </p>
                     </Button>}
                 </Col>
-                {idPalabra !== (palabras.length + 1) && <Col className="col-auto ms-auto">
+                {idPalabra !== (palabras.length) && <Col className="col-auto ms-auto">
                     <Button className="cta-button" onClick={() => {
                         setIdPalabra(idPalabra => idPalabra + 1);
                     }}>
