@@ -1,19 +1,40 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Webcam from 'react-webcam';
 import CorrectoAlert from "../Components/CorrectoAlert";
 import IncorrectoAlert from "../Components/IncorrectoAlert";
+import api from "../api/route.js";
 
 function Practica() {
     let success = false
     let failure = false
 
-    let imagen = "https://i.ytimg.com/vi/w9wvpDHOH88/maxresdefault.jpg"
-    let palabra = "a"
+    const [palabra, setPalabra] = useState();
+    const [imagen, setImagen] = useState();
+    const [key, setKey] = useState(0);
 
     let error = "Mueve el dedo índice hacia la derecha."
 
     const webcamRef = useRef(null);
+
+    useEffect(() => {
+        const getPalabra = async () => {
+            try {
+                const response = await api.get(`/random`);
+                setPalabra(response.data.titulo);
+                setImagen(response.data.imagen64)
+            } catch (err) {
+                if (err.response) {
+                    console.log(err.response.data);
+                    console.log(err.response.status);
+                    console.log(err.response.headers);
+                } else {
+                    console.log(`Error: ${err.message}`);
+                }
+            }
+        }
+        getPalabra();
+    }, [key]);
 
     /* useEffect(() => {
         // Establecer la frecuencia de envío de frames
@@ -56,10 +77,10 @@ function Practica() {
     }, []);
 
     return (
-        <Container fluid>
+        <Container fluid key={key}>
             {success && <CorrectoAlert />}
             {failure && <IncorrectoAlert error={error} />}
-            <Row className="m-5 mb-4">
+            <Row className="m-5 mb-4" key={key}>
                 <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
                     <Row className="text-center">
                         <h2 className="fw-normal">
@@ -70,7 +91,7 @@ function Practica() {
                     </Row>
                     <Row className="p-4">
                         <img
-                            src={imagen}
+                            src={`data:image/jpeg;base64,${imagen}`}
                             alt="Imagen de la seña a realizar"
                             style={{ width: "auto" }}
                         />
@@ -109,7 +130,9 @@ function Practica() {
             </Row>
             <Row className="mx-5 mb-5">
                 <Col className="col-auto ms-auto">
-                    <Button className={success ? "cta-button" : "non-cta-button"}>
+                    <Button className={success ? "cta-button" : "non-cta-button"} onClick={() => {
+                        setKey(key + 1);
+                    }}>
                         <p className="m-0" style={{ color: "var(--text-white)" }}>
                             {success ? "Siguiente" : "Saltar"}
                         </p>
