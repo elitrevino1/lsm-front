@@ -57,15 +57,17 @@ function Practica() {
 
     const captureFrame = async () => {
         if (webcamRef.current) {
-            //const frame = webcamRef.current.getScreenshot();
+            const frame = webcamRef.current.getScreenshot();
             // Envía el frame al servidor Flask
             //console.log(frame);
 
-            /* try {
-                await axios.post('http://localhost:5000/process_frame', { frame });
+            try {
+                const response = await api.post(`/process_frame`, { frame });
+                console.log(response);
+                //await axios.post('http://localhost:5000/process_frame', { frame });
             } catch (error) {
                 console.error('Error al enviar el frame al servidor:', error);
-            } */
+            }
 
 
             requestAnimationFrame(captureFrame);
