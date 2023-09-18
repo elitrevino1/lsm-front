@@ -197,6 +197,7 @@ body {
 
 .green-alert {
   background-color: #B3E7BE !important;
+  z-index: 1000 !important;
 }
 
 .green-text {
@@ -205,6 +206,7 @@ body {
 
 .red-alert {
   background-color: #F4BFC3 !important;
+  z-index: 999 !important;
 }
 
 .red-text {
@@ -223,4 +225,8 @@ body {
 .nav-align {
   display: flex;
   align-items: center;
+}
+
+.msg-wrapper {
+  white-space: pre-wrap;
 }

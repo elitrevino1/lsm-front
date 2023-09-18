@@ -4,16 +4,25 @@ import Webcam from 'react-webcam';
 import CorrectoAlert from "../Components/CorrectoAlert";
 import IncorrectoAlert from "../Components/IncorrectoAlert";
 import api from "../api/route.js";
+import useWindowSize from 'react-use/lib/useWindowSize'
+import Confetti from 'react-confetti'
 
 function Practica() {
-    let success = false
-    let failure = false
+
+    const [success, setSuccess] = useState(false);
+    const [failure, setFailure] = useState(false);
 
     const [palabra, setPalabra] = useState();
     const [imagen, setImagen] = useState();
     const [key, setKey] = useState(0);
 
-    let error = "Mueve el dedo índice hacia la derecha."
+    const [showCorrecto, setShowCorrecto] = useState(false);
+    const [showIncorrecto, setShowIncorrecto] = useState(false);
+    const { width, height } = useWindowSize()
+
+    const [showVideo, setShowVideo] = useState(true);
+
+    const [error, setError] = useState("");
 
     const webcamRef = useRef(null);
 
@@ -56,38 +65,68 @@ function Practica() {
     }, []);
 
     const captureFrame = async () => {
-        if (webcamRef.current) {
+        if(success){
+            setShowVideo(false);
+            setShowIncorrecto(false);
+        }
+        else if (webcamRef.current) {
             const frame = webcamRef.current.getScreenshot();
-            // Envía el frame al servidor Flask
-            //console.log(frame);
+                // Envía el frame al servidor Flask
+                //console.log(frame);
+    
+                try {
+                    if(!success){
+                        const response = await api.post(`/process_frame`, { frame, palabra });
+                        const data = response.data[0];
+                        if (data === "Correcto") {
+                            setSuccess(true);
+                            setShowCorrecto(true);
+                            setShowIncorrecto(false);
+                            setKey(key);
+                            setFailure(false);
+                            let stream = webcamRef.video.srcObject;
+                            const tracks = stream.getTracks();
+    
+                            tracks.forEach(track => track.stop());
+                            webcamRef.video.srcObject = null;
+                        }
+                        else if (data !== "No hay mano detectada" && !success) {
+                            setFailure(true);
+                            let str = "";
+                            // eslint-disable-next-line
+                            response.data.map((tuple) => {
+                                str += tuple + "\n";
+                            });
+                            setError(str);
+                            if (!success) { setShowIncorrecto(true); }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error al enviar el frame al servidor:', error);
+                }
 
-            try {
-                const response = await api.post(`/process_frame`, { frame });
-                console.log(response);
-                //await axios.post('http://localhost:5000/process_frame', { frame });
-            } catch (error) {
-                console.error('Error al enviar el frame al servidor:', error);
-            }
-
-
-            requestAnimationFrame(captureFrame);
+            setTimeout(() => requestAnimationFrame(captureFrame), 2000);
         }
     };
 
     useEffect(() => {
-        requestAnimationFrame(captureFrame);
-    }, []);
+        setTimeout(() => requestAnimationFrame(captureFrame), 2000);
+    }, [success, palabra]);
 
     return (
         <Container fluid key={key}>
-            {success && <CorrectoAlert />}
-            {failure && <IncorrectoAlert error={error} />}
+            {success && <Confetti
+                width={width}
+                height={height}
+            />}
+            {success && <CorrectoAlert show={showCorrecto} />}
+            {failure && showVideo && <IncorrectoAlert error={error} show={showIncorrecto} />}
             <Row className="m-5 mb-4" key={key}>
                 <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
                     <Row className="text-center">
                         <h2 className="fw-normal">
-                            {failure ? "Vuelve a intentar" :
-                                success ? "¡EXCELENTE! Has realizado:" :
+                            {success ? "¡EXCELENTE! Has realizado:" :
+                                failure ? "Vuelve a intentar" :
                                     "Realiza la siguiente seña:"}
                         </h2>
                     </Row>
@@ -104,13 +143,13 @@ function Practica() {
                 </Col>
                 <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
                     <Row>
-                        <Webcam
+                        {showVideo && <Webcam
                             audio={false}
                             ref={webcamRef}
                             screenshotFormat="image/png"
                             mirrored={true}
                             className="p-0"
-                        />
+                        />}
                         {/* <video
                             ref={videoRef}
                             autoPlay
@@ -123,10 +162,10 @@ function Practica() {
                         <canvas ref={canvasRef} width={960} height={540} style={{ display: 'none' }} /> */}
                     </Row>
                     <Row>
-                        <p className="m-0 mt-3">
+                        {showVideo && <p className="m-0 mt-3">
                             <i className="fa-solid fa-lightbulb pe-2"></i>
                             <span><u>¿No recuerdas cómo se hace?</u></span>
-                        </p>
+                        </p>}
                     </Row>
                 </Col>
             </Row>
@@ -134,6 +173,11 @@ function Practica() {
                 <Col className="col-auto ms-auto">
                     <Button className={success ? "cta-button" : "non-cta-button"} onClick={() => {
                         setKey(key + 1);
+                        setSuccess(false);
+                        setFailure(false);
+                        setShowVideo(true);
+                        setShowCorrecto(false);
+                        setShowIncorrecto(false);
                     }}>
                         <p className="m-0" style={{ color: "var(--text-white)" }}>
                             {success ? "Siguiente" : "Saltar"}

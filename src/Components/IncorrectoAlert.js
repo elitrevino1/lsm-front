@@ -3,7 +3,7 @@ import { Alert } from "react-bootstrap";
 
 function IncorrectoAlert(props) {
 
-    const [show, setShow] = useState(true);
+    const [show, setShow] = useState(props.show);
 
     return (
         <div style={{ position: "absolute", top: "11vh", right: "1vw", zIndex: 999 }}>
@@ -14,7 +14,7 @@ function IncorrectoAlert(props) {
                         <span>Incorrecto</span>
                     </h2>
                 </Alert.Heading>
-                <p className="me-5 red-text" style={{ minWidth: "15vw" }}>
+                <p className="me-5 red-text msg-wrapper" style={{ minWidth: "15vw" }}>
                     {props.error}
                 </p>
             </Alert>
