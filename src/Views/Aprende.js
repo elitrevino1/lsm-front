@@ -48,7 +48,7 @@ function Aprende() {
             </Row>
             <Row className="mx-5">
                 {lecciones.map((leccion) =>
-                    <Col xs={12} sm={6} md={4} lg={3} xl={3} key={leccion.id} className="d-flex align-items-stretch" onClick={() => navigate("/aprende/leccion", {
+                    <Col xs={12} sm={6} md={4} lg={3} xl={2} key={leccion.id} className="d-flex align-items-stretch" onClick={() => navigate("/aprende/leccion", {
                         state: {
                             id: leccion.id,
                             nombre: leccion.nombre,
