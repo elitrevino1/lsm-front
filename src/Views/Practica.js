@@ -26,6 +26,8 @@ function Practica() {
 
     const webcamRef = useRef(null);
 
+    const controller = new AbortController();
+
     useEffect(() => {
         const getPalabra = async () => {
             try {
@@ -65,45 +67,46 @@ function Practica() {
     }, []);
 
     const captureFrame = async () => {
-        if(success){
+        if (success) {
             setShowVideo(false);
             setShowIncorrecto(false);
+            controller.abort();
         }
         else if (webcamRef.current) {
             const frame = webcamRef.current.getScreenshot();
-                // Envía el frame al servidor Flask
-                //console.log(frame);
-    
-                try {
-                    if(!success){
-                        const response = await api.post(`/process_frame`, { frame, palabra });
-                        const data = response.data[0];
-                        if (data === "Correcto") {
-                            setSuccess(true);
-                            setShowCorrecto(true);
-                            setShowIncorrecto(false);
-                            setKey(key);
-                            setFailure(false);
-                            let stream = webcamRef.video.srcObject;
-                            const tracks = stream.getTracks();
-    
-                            tracks.forEach(track => track.stop());
-                            webcamRef.video.srcObject = null;
-                        }
-                        else if (data !== "No hay mano detectada" && !success) {
-                            setFailure(true);
-                            let str = "";
-                            // eslint-disable-next-line
-                            response.data.map((tuple) => {
-                                str += tuple + "\n";
-                            });
-                            setError(str);
-                            if (!success) { setShowIncorrecto(true); }
-                        }
+            // Envía el frame al servidor Flask
+            //console.log(frame);
+
+            try {
+                if (!success) {
+                    const response = await api.post(`/process_frame`, { frame, palabra });
+                    const data = response.data[0];
+                    if (data === "Correcto") {
+                        setSuccess(true);
+                        setShowCorrecto(true);
+                        setShowIncorrecto(false);
+                        setKey(key);
+                        setFailure(false);
+                        let stream = webcamRef.video.srcObject;
+                        const tracks = stream.getTracks();
+
+                        tracks.forEach(track => track.stop());
+                        webcamRef.video.srcObject = null;
                     }
-                } catch (error) {
-                    console.error('Error al enviar el frame al servidor:', error);
+                    else if (data !== "No hay mano detectada" && !success) {
+                        setFailure(true);
+                        let str = "";
+                        // eslint-disable-next-line
+                        response.data.map((tuple) => {
+                            str += tuple + "\n";
+                        });
+                        setError(str);
+                        if (!success) { setShowIncorrecto(true); }
+                    }
                 }
+            } catch (error) {
+                console.error('Error al enviar el frame al servidor:', error);
+            }
 
             setTimeout(() => requestAnimationFrame(captureFrame), 2000);
         }
@@ -120,7 +123,7 @@ function Practica() {
                 height={height}
             />}
             {success && <CorrectoAlert show={showCorrecto} />}
-            {failure && showVideo && <IncorrectoAlert error={error} show={showIncorrecto} />}
+            {failure && showVideo && !success && <IncorrectoAlert error={error} show={showIncorrecto} />}
             <Row className="m-5 mb-4" key={key}>
                 <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
                     <Row className="text-center">
