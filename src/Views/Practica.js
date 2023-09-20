@@ -12,7 +12,7 @@ function Practica() {
     const [success, setSuccess] = useState(false);
     const [failure, setFailure] = useState(false);
 
-    const [palabra, setPalabra] = useState();
+    const [palabra, setPalabra] = useState(null);
     const [imagen, setImagen] = useState();
     const [key, setKey] = useState(0);
 
@@ -78,9 +78,12 @@ function Practica() {
             //console.log(frame);
 
             try {
-                if (!success) {
+                if (!success && palabra !== null) {
+                    console.log("hola " + palabra)
+                    //let palabra1 = "a"
                     const response = await api.post(`/process_frame`, { frame, palabra });
                     const data = response.data[0];
+                    //console.log(response.data)
                     if (data === "Correcto") {
                         setSuccess(true);
                         setShowCorrecto(true);
@@ -93,11 +96,13 @@ function Practica() {
                         tracks.forEach(track => track.stop());
                         webcamRef.video.srcObject = null;
                     }
-                    else if (data !== "No hay mano detectada" && !success) {
+                    else if (data !== "No hay mano detectada" && !response.data.error && !success) {
                         setFailure(true);
                         let str = "";
+                        //console.log(response.data)
                         // eslint-disable-next-line
                         response.data.map((tuple) => {
+                            //console.log(tuple)
                             str += tuple + "\n";
                         });
                         setError(str);
@@ -108,13 +113,17 @@ function Practica() {
                 console.error('Error al enviar el frame al servidor:', error);
             }
 
-            setTimeout(() => requestAnimationFrame(captureFrame), 2000);
+            setTimeout(() => requestAnimationFrame(captureFrame), 1000);
         }
     };
 
     useEffect(() => {
-        setTimeout(() => requestAnimationFrame(captureFrame), 2000);
-    }, [success, palabra]);
+        setTimeout(() => captureFrame(), 1000);
+    }, [success, palabra, key]);
+
+    const handleClick = () => {
+        window.location.reload();
+    }
 
     return (
         <Container fluid key={key}>
@@ -153,16 +162,6 @@ function Practica() {
                             mirrored={true}
                             className="p-0"
                         />}
-                        {/* <video
-                            ref={videoRef}
-                            autoPlay
-                            width={"100%"}
-                            height={"100%"}
-                            alt="Cómo hacer la seña"
-                            controls="controls"
-                            type="video/mp4"
-                        />
-                        <canvas ref={canvasRef} width={960} height={540} style={{ display: 'none' }} /> */}
                     </Row>
                     <Row>
                         {showVideo && <p className="m-0 mt-3">
@@ -174,14 +173,7 @@ function Practica() {
             </Row>
             <Row className="mx-5 mb-5">
                 <Col className="col-auto ms-auto">
-                    <Button className={success ? "cta-button" : "non-cta-button"} onClick={() => {
-                        setKey(key + 1);
-                        setSuccess(false);
-                        setFailure(false);
-                        setShowVideo(true);
-                        setShowCorrecto(false);
-                        setShowIncorrecto(false);
-                    }}>
+                    <Button className={success ? "cta-button" : "non-cta-button"} onClick={handleClick}>
                         <p className="m-0" style={{ color: "var(--text-white)" }}>
                             {success ? "Siguiente" : "Saltar"}
                         </p>
