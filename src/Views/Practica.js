@@ -14,7 +14,7 @@ function Practica() {
 
     const [palabra, setPalabra] = useState(null);
     const [imagen, setImagen] = useState();
-    const [key, setKey] = useState(0);
+    //const [key, setKey] = useState(0);
 
     const [showCorrecto, setShowCorrecto] = useState(false);
     const [showIncorrecto, setShowIncorrecto] = useState(false);
@@ -34,6 +34,7 @@ function Practica() {
                 const response = await api.get(`/random`);
                 setPalabra(response.data.titulo);
                 setImagen(response.data.imagen64)
+                console.log(response.data.titulo);
             } catch (err) {
                 if (err.response) {
                     console.log(err.response.data);
@@ -45,7 +46,7 @@ function Practica() {
             }
         }
         getPalabra();
-    }, [key]);
+    }, []);
 
     /* useEffect(() => {
         // Establecer la frecuencia de envío de frames
@@ -88,7 +89,7 @@ function Practica() {
                         setSuccess(true);
                         setShowCorrecto(true);
                         setShowIncorrecto(false);
-                        setKey(key);
+                        //setKey(key);
                         setFailure(false);
                         let stream = webcamRef.video.srcObject;
                         const tracks = stream.getTracks();
@@ -119,21 +120,21 @@ function Practica() {
 
     useEffect(() => {
         setTimeout(() => captureFrame(), 1000);
-    }, [success, palabra, key]);
+    }, [success, palabra]);
 
     const handleClick = () => {
         window.location.reload();
     }
 
     return (
-        <Container fluid key={key}>
+        <Container fluid>
             {success && <Confetti
                 width={width}
                 height={height}
             />}
             {success && <CorrectoAlert show={showCorrecto} />}
             {failure && showVideo && !success && <IncorrectoAlert error={error} show={showIncorrecto} />}
-            <Row className="m-5 mb-4" key={key}>
+            <Row className="m-5 mb-4">
                 <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
                     <Row className="text-center">
                         <h2 className="fw-normal">
