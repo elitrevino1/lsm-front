@@ -91,10 +91,11 @@ function Leccion() {
                     <img
                         src={`data:image/jpeg;base64,${video}`}
                         width={"100%"}
-                        className="pe-5" />
+                        style={{ height: "30vw" }}
+                        className="pe-lg-5 cover" />
                 </Col>
                 <Col xs={12} lg={4} className="mt-4" style={{ height: "100%" }}>
-                    <PalabraCard imagen={imagen} palabra={palabra} definicion={definicion} />
+                    <PalabraCard id="palCard" imagen={imagen} palabra={palabra} definicion={definicion} />
                 </Col>
             </Row>
             <Row className="m-5">
