@@ -80,14 +80,18 @@ function Leccion() {
             </Row>
             <Row className="mx-5 align-items-center" key={idPalabra}>
                 <Col xs={12} lg={8} className="mt-4" style={{ height: "100%" }}>
-                    <video
+                    {/* <video
                         src={video}
                         width={"100%"}
                         height={"100%"}
                         alt="Cómo hacer la seña"
                         controls="controls"
                         type="video/mp4"
-                    />
+                    /> */}
+                    <img
+                        src={`data:image/jpeg;base64,${video}`}
+                        width={"100%"}
+                        className="pe-5" />
                 </Col>
                 <Col xs={12} lg={4} className="mt-4" style={{ height: "100%" }}>
                     <PalabraCard imagen={imagen} palabra={palabra} definicion={definicion} />
