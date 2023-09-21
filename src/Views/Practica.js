@@ -135,7 +135,7 @@ function Practica() {
             {success && <CorrectoAlert show={showCorrecto} />}
             {failure && showVideo && !success && <IncorrectoAlert error={error} show={showIncorrecto} />}
             <Row className="m-5 mb-4">
-                <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
+                <Col xs={12} lg={5} style={{ height: "100%" }} className="mt-5">
                     <Row className="text-center">
                         <h2 className="fw-normal">
                             {success ? "¡EXCELENTE! Has realizado:" :
@@ -154,7 +154,7 @@ function Practica() {
                         <h1>{palabra}</h1>
                     </Row>
                 </Col>
-                <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
+                <Col xs={12} lg={7} style={{ height: "100%" }} className="mt-5">
                     <Row>
                         {showVideo && <Webcam
                             audio={false}
