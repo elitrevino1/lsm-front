@@ -54,12 +54,23 @@ function Practica() {
     }) */
 
     const startVideo = async () => {
-        if (webcamRef.current) {
-            const videoConstraints = {
-                facingMode: 'user', // Puedes ajustar esto según la cámara frontal o trasera
-            };
-            const stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints });
-            webcamRef.current.video.srcObject = stream;
+        try {
+            if (webcamRef.current) {
+                const videoConstraints = {
+                    facingMode: 'user', // Puedes ajustar esto según la cámara frontal o trasera
+                };
+                const stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints });
+                webcamRef.current.video.srcObject = stream;
+            }
+        } catch (error) {
+            alert("Revisa que no tengas algún otro dispositivo utilizando la cámara")
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else {
+                console.log(`Error: ${error.message}`);
+            }
         }
     };
 
@@ -114,12 +125,13 @@ function Practica() {
                 console.error('Error al enviar el frame al servidor:', error);
             }
 
-            setTimeout(() => requestAnimationFrame(captureFrame), 1000);
+            setTimeout(() => requestAnimationFrame(captureFrame), 700);
         }
     };
 
     useEffect(() => {
-        setTimeout(() => captureFrame(), 1000);
+        setTimeout(() => captureFrame(), 700);
+        // eslint-disable-next-line
     }, [success, palabra]);
 
     const handleClick = () => {
@@ -135,7 +147,7 @@ function Practica() {
             {success && <CorrectoAlert show={showCorrecto} />}
             {failure && showVideo && !success && <IncorrectoAlert error={error} show={showIncorrecto} />}
             <Row className="m-5 mb-4">
-                <Col xs={12} lg={5} style={{ height: "100%" }} className="mt-5">
+                <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
                     <Row className="text-center">
                         <h2 className="fw-normal">
                             {success ? "¡EXCELENTE! Has realizado:" :
@@ -154,7 +166,7 @@ function Practica() {
                         <h1>{palabra}</h1>
                     </Row>
                 </Col>
-                <Col xs={12} lg={7} style={{ height: "100%" }} className="mt-5">
+                <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
                     <Row>
                         {showVideo && <Webcam
                             audio={false}

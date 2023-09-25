@@ -92,6 +92,7 @@ function Leccion() {
                         src={`data:image/jpeg;base64,${video}`}
                         width={"100%"}
                         style={{ height: "30vw" }}
+                        alt={"Foto de cómo se hace la seña"}
                         className="pe-lg-5 cover" />
                 </Col>
                 <Col xs={12} lg={4} className="mt-4" style={{ height: "100%" }}>
