@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { Alert } from "react-bootstrap";
 
-function CorrectoAlert() {
+function CorrectoAlert(props) {
 
-    const [show, setShow] = useState(true);
+    const [show, setShow] = useState(props.show);
 
     return (
-        <div style={{ position: "absolute", top: "11vh", right: "1vw", zIndex: 999 }}>
-            <Alert show={true} variant="success" onClose={() => setShow(false)} dismissible className="green-alert">
+        <div style={{ position: "absolute", top: "9vh", right: "1vw", zIndex: 999 }}>
+            <Alert show={show} variant="success" onClose={() => setShow(false)} dismissible className="green-alert px-4">
                 <Alert.Heading>
-                    <h2 className="green-text">
-                        <i class="fa-solid fa-circle-check pe-2"></i>
+                    <h1 className="green-text">
+                        <i className="fa-solid fa-circle-check pe-3"></i>
                         <span>Correcto</span>
-                    </h2>
+                    </h1>
                 </Alert.Heading>
-                <p className="me-5 green-text" style={{ minWidth: "15vw" }}>
+                <h3 className="me-5 green-text fw-normal pt-1 pb-2" style={{ minWidth: "15vw" }}>
                     ¡Excelente, sigue así!
-                </p>
+                </h3>
             </Alert>
         </div>
     );

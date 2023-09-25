@@ -24,14 +24,14 @@ function CustomNavbar() {
                     <Nav>
                         <Nav.Link href="/aprende" className={window.location.href.includes("aprende") ? "white-bg p-0 nav-align justify-content-end" : "p-0 nav-align justify-content-end"}>
                             <h3 className={window.location.href.includes("aprende") ? "orange-text m-0 py-3 p-5" : "m-0 py-3 p-5"} >
-                                <i class="fa-solid fa-book pe-2"></i>
+                                <i className="fa-solid fa-book pe-2"></i>
                                 <span>Aprende</span>
                             </h3>
                         </Nav.Link>
 
                         <Nav.Link href="/practica" className={window.location.href.includes("practica") ? "white-bg p-0 nav-align me-0 me-md-5 justify-content-end" : "p-0 nav-align me-0 me-md-5 justify-content-end"}>
                             <h3 className={window.location.href.includes("practica") ? "orange-text m-0 py-3 p-5" : "m-0 py-3 p-5"}>
-                                <i class="fa-solid fa-hand pe-2"></i>
+                                <i className="fa-solid fa-hand pe-2"></i>
                                 <span>Practica</span>
                             </h3>
                         </Nav.Link>

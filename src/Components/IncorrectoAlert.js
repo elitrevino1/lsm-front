@@ -3,20 +3,20 @@ import { Alert } from "react-bootstrap";
 
 function IncorrectoAlert(props) {
 
-    const [show, setShow] = useState(true);
+    const [show, setShow] = useState(props.show);
 
     return (
-        <div style={{ position: "absolute", top: "11vh", right: "1vw", zIndex: 999 }}>
-            <Alert show={show} variant="danger" onClose={() => setShow(false)} dismissible className="red-alert">
+        <div style={{ position: "absolute", top: "9vh", right: "1vw", zIndex: 999 }}>
+            <Alert show={show} variant="danger" onClose={() => setShow(false)} dismissible className="red-alert px-4">
                 <Alert.Heading>
-                    <h2 className="red-text">
-                        <i class="fa-solid fa-circle-xmark pe-2"></i>
+                    <h1 className="red-text">
+                        <i className="fa-solid fa-circle-xmark pe-3"></i>
                         <span>Incorrecto</span>
-                    </h2>
+                    </h1>
                 </Alert.Heading>
-                <p className="me-5 red-text" style={{ minWidth: "15vw" }}>
+                <h3 className="me-5 red-text msg-wrapper fw-normal pt-1 pb-2" style={{ minWidth: "15vw" }}>
                     {props.error}
-                </p>
+                </h3>
             </Alert>
         </div>
     );
