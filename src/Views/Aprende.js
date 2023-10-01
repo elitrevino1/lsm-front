@@ -18,7 +18,7 @@ function Aprende() {
                 // eslint-disable-next-line
                 response.data.map((tuple) => {
                     let newElement = {
-                        id: tuple.id,
+                        id: tuple.leccionID,
                         nombre: tuple.titulo,
                         imagen: tuple.imagen64,
                     }
@@ -26,6 +26,7 @@ function Aprende() {
                 }
                 );
                 setLecciones(arr);
+                console.log(arr);
             } catch (err) {
                 if (err.response) {
                     console.log(err.response.data);
