@@ -73,7 +73,7 @@ function Leccion() {
         }
 
         getPalabras();
-    }, [id]);
+    }, [initialId, id]);
 
     return (
         <Container fluid key={idPalabra}>
@@ -90,12 +90,13 @@ function Leccion() {
                     <div className="leccion-menu shadow-lg">
                         {palabras.map((pal) =>
                             <div className={pal.id === (idPalabra + initialId - 1) ? "p-4 border palabra-selected"
-                                : pal.id - idPalabra === -1 ? "mx-4 py-4"
+                                : pal.id - (idPalabra + initialId - 1) === -1 ? "mx-4 py-4"
                                     : "mx-4 py-4 border-bottom"} key={pal.id}
                                 onClick={() => {
                                     let newId = pal.id - initialId + 1
                                     console.log("n " + pal.id + " " + initialId + " " + newId)
                                     setIdPalabra(idPalabra => newId);
+                                    setShowMenu(false);
                                 }}>
                                 <img className="me-3 cover" height={40} width={60} src={`data:image/jpeg;base64,${pal.imagen}`} alt={pal.nombre} />
                                 <span className={pal.id === (idPalabra + initialId - 1) ? "p p-0 m-0 secondary-color fw-bold" : "p p-0 m-0"}>{pal.nombre}</span>
