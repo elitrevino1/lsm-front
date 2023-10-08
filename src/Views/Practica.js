@@ -14,12 +14,17 @@ function Practica() {
 
     const [palabra, setPalabra] = useState(null);
     const [imagen, setImagen] = useState();
-    const [videoLSM, setVideoLSM] = useState()
+    const [videoLSM, setVideoLSM] = useState();
+    const [dynamic, setDynamic] = useState();
+    const [numSteps, setNumSteps] = useState();
     //const [key, setKey] = useState(0);
 
     const [showCorrecto, setShowCorrecto] = useState(false);
     const [showIncorrecto, setShowIncorrecto] = useState(false);
     const [showHint, setShowHint] = useState(false);
+    const [showOverlay, setShowOverlay] = useState(false);
+    const [showStartButton, setShowStartButton] = useState(true);
+    const [countdownText, setCountdownText] = useState();
     const { width, height } = useWindowSize()
 
     const [showVideo, setShowVideo] = useState(true);
@@ -39,6 +44,11 @@ function Practica() {
                 setPalabra(response.data.titulo);
                 setImagen(response.data.imagen64)
                 setVideoLSM(response.data.video64);
+                if (response.data.dinamico === 1) {
+                    setDynamic(true);
+                    setShowOverlay(true);
+                    setNumSteps(response.data.pasos);
+                }
                 console.log(response.data.titulo);
             } catch (err) {
                 if (err.response) {
@@ -134,13 +144,104 @@ function Practica() {
         }
     };
 
+    const screenshotDynamicFrames = async (frames) => {
+        for (let j = 0; j < numSteps; j++) {
+            let frame = webcamRef.current.getScreenshot();
+            frames.push(frame);
+            await delay(500);
+        }
+
+        return frames;
+    }
+
+    const delay = (time) => {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+    const captureDynamicFrame = async () => {
+        if (success) {
+            setShowVideo(false);
+            setShowIncorrecto(false);
+            controller.abort();
+        }
+        else if (webcamRef.current) {
+
+            let frames = [];
+
+            frames = await screenshotDynamicFrames(frames);
+
+            if (frames[0] !== null && frames[1] !== null) {
+                console.log(frames);
+
+
+            }
+
+            //setTimeout(() => requestAnimationFrame(captureDynamicFrame), 3000);
+
+            /* try {
+                if (!success && palabra !== null) {
+                    console.log("hola " + palabra)
+                    //let palabra1 = "a"
+                    const response = await api.post(`/process_frame`, { frame, palabra });
+                    const data = response.data[0];
+                    //console.log(response.data)
+                    if (data === "Correcto") {
+                        setSuccess(true);
+                        setShowCorrecto(true);
+                        setShowIncorrecto(false);
+                        //setKey(key);
+                        setFailure(false);
+                        let stream = webcamRef.video.srcObject;
+                        const tracks = stream.getTracks();
+
+                        tracks.forEach(track => track.stop());
+                        webcamRef.video.srcObject = null;
+                    }
+                    else if (data !== "No hay mano detectada" && !response.data.error && !success) {
+                        setFailure(true);
+                        let str = "";
+                        //console.log(response.data)
+                        // eslint-disable-next-line
+                        response.data.map((tuple) => {
+                            //console.log(tuple)
+                            str += tuple + "\n";
+                        });
+                        setError(str);
+                        if (!success) { setShowIncorrecto(true); }
+                    }
+                }
+            } catch (error) {
+                console.error('Error al enviar el frame al servidor:', error);
+            }
+
+            setTimeout(() => requestAnimationFrame(captureFrame), 700); */
+        }
+    };
+
     useEffect(() => {
-        setTimeout(() => captureFrame(), 700);
+        if (!dynamic) {
+            setTimeout(() => captureFrame(), 700);
+        }
         // eslint-disable-next-line
     }, [success, palabra]);
 
     const handleClick = () => {
         window.location.reload();
+    }
+
+    const handleStartDynamic = async () => {
+
+        setShowStartButton(false);
+        setCountdownText("3")
+        await delay(1000);
+        setCountdownText("2")
+        await delay(1000);
+        setCountdownText("1")
+        await delay(500);
+        setShowOverlay(false);
+        await delay(500);
+
+        captureDynamicFrame();
     }
 
     return (
@@ -187,14 +288,25 @@ function Practica() {
                     </Row>
                 </Col>
                 <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
-                    <Row>
+                    <Row className="d-block position-relative">
                         {showVideo && <Webcam
                             audio={false}
                             ref={webcamRef}
                             screenshotFormat="image/png"
                             mirrored={true}
-                            className="p-0"
+                            className="p-0 position-relative"
                         />}
+                        {dynamic && showOverlay &&
+                            <div className="overlay-123 p-0 d-flex justify-content-center align-items-center">
+                                {showStartButton && <Button className="cta-button" onClick={handleStartDynamic}>
+                                    <p className="m-0" style={{ color: "var(--text-white)" }}>
+                                        Empezar
+                                    </p>
+                                </Button>}
+                                {showStartButton || <h3 className="m-0 white-text">
+                                    {countdownText}
+                                </h3>}
+                            </div>}
                     </Row>
                     <Row>
                         {showVideo &&
@@ -208,7 +320,7 @@ function Practica() {
             <Row className="mx-5 mb-5">
                 <Col className="col-auto ms-auto">
                     <Button className={success ? "cta-button" : "non-cta-button"} onClick={handleClick}>
-                        <p className="m-0" style={{ color: "var(--text-white)" }}>
+                        <p className={success ? "m-0 white-text" : "m-0 orange-text"} >
                             {success ? "Siguiente" : "Saltar"}
                         </p>
                     </Button>
