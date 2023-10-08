@@ -15,6 +15,7 @@ function Leccion() {
     const [definicion, setDefinicion] = useState();
     const [video, setVideo] = useState();
     const [palabras, setPalabras] = useState([]);
+    const [showMenu, setShowMenu] = useState(false)
 
     useEffect(() => {
         const getPalabra = async () => {
@@ -79,23 +80,23 @@ function Leccion() {
                 </Col>
             </Row>
             <Row className="mx-5 align-items-center" key={idPalabra}>
-                <Col xs={12} lg={8} className="mt-4" style={{ height: "100%" }}>
-                    {/* <video
-                        src={video}
+                <Col xs={12} lg={7} className="mt-4" style={{ height: "100%" }}>
+                    <video
+                        src={`data:video/mp4;base64,${video}`}
                         width={"100%"}
                         height={"100%"}
                         alt="Cómo hacer la seña"
                         controls="controls"
                         type="video/mp4"
-                    /> */}
-                    <img
+                    />
+                    {/* <img
                         src={`data:image/jpeg;base64,${video}`}
                         width={"100%"}
                         style={{ height: "30vw" }}
                         alt={"Foto de cómo se hace la seña"}
-                        className="pe-lg-5 cover" />
+                        className="pe-lg-5 cover" /> */}
                 </Col>
-                <Col xs={12} lg={4} className="mt-4" style={{ height: "100%" }}>
+                <Col xs={12} lg={5} className="mt-4" style={{ height: "100%" }}>
                     <PalabraCard id="palCard" imagen={imagen} palabra={palabra} definicion={definicion} />
                 </Col>
             </Row>

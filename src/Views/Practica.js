@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Modal } from "react-bootstrap";
 import Webcam from 'react-webcam';
 import CorrectoAlert from "../Components/CorrectoAlert";
 import IncorrectoAlert from "../Components/IncorrectoAlert";
@@ -14,10 +14,12 @@ function Practica() {
 
     const [palabra, setPalabra] = useState(null);
     const [imagen, setImagen] = useState();
+    const [videoLSM, setVideoLSM] = useState()
     //const [key, setKey] = useState(0);
 
     const [showCorrecto, setShowCorrecto] = useState(false);
     const [showIncorrecto, setShowIncorrecto] = useState(false);
+    const [showHint, setShowHint] = useState(false);
     const { width, height } = useWindowSize()
 
     const [showVideo, setShowVideo] = useState(true);
@@ -28,12 +30,15 @@ function Practica() {
 
     const controller = new AbortController();
 
+    const handleShowHint = () => setShowHint(true);
+
     useEffect(() => {
         const getPalabra = async () => {
             try {
                 const response = await api.get(`/random`);
                 setPalabra(response.data.titulo);
                 setImagen(response.data.imagen64)
+                setVideoLSM(response.data.video64);
                 console.log(response.data.titulo);
             } catch (err) {
                 if (err.response) {
@@ -146,6 +151,21 @@ function Practica() {
             />}
             {success && <CorrectoAlert show={showCorrecto} />}
             {failure && showVideo && !success && <IncorrectoAlert error={error} show={showIncorrecto} />}
+            {success || <Modal centered show={showHint} onHide={() => setShowHint(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title className="h3">{palabra} en LSM</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <video
+                        src={`data:video/mp4;base64,${videoLSM}`}
+                        width={"100%"}
+                        height={"100%"}
+                        alt="Cómo hacer la seña"
+                        controls="controls"
+                        type="video/mp4"
+                    />
+                </Modal.Body>
+            </Modal>}
             <Row className="m-5 mb-4">
                 <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
                     <Row className="text-center">
@@ -177,10 +197,11 @@ function Practica() {
                         />}
                     </Row>
                     <Row>
-                        {showVideo && <p className="m-0 mt-3">
-                            <i className="fa-solid fa-lightbulb pe-2"></i>
-                            <span><u>¿No recuerdas cómo se hace?</u></span>
-                        </p>}
+                        {showVideo &&
+                            <p className="m-0 mt-3" onClick={handleShowHint}>
+                                <i className="fa-solid fa-lightbulb pe-2"></i>
+                                <span><u>¿No recuerdas cómo se hace?</u></span>
+                            </p>}
                     </Row>
                 </Col>
             </Row>

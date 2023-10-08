@@ -56,13 +56,13 @@ h2,
 
 h3,
 .h3 {
-  font-family: var(--inter);
-  font-style: var(--fs-normal);
-  font-weight: var(--fw-bold);
-  font-size: var(--size1-17);
-  line-height: var(--linespace-23);
-  letter-spacing: var(--charspace-0);
-  color: var(--black);
+  font-family: var(--inter) !important;
+  font-style: var(--fs-normal) !important;
+  font-weight: var(--fw-bold) !important;
+  font-size: var(--size1-17) !important;
+  line-height: var(--linespace-23) !important;
+  letter-spacing: var(--charspace-0) !important;
+  color: var(--black) !important;
 }
 
 h4,
