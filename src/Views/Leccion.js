@@ -99,7 +99,7 @@ function Leccion() {
                                     setShowMenu(false);
                                 }}>
                                 <img className="me-3 cover" height={40} width={60} src={`data:image/jpeg;base64,${pal.imagen}`} alt={pal.nombre} />
-                                <span className={pal.id === (idPalabra + initialId - 1) ? "p p-0 m-0 secondary-color fw-bold" : "p p-0 m-0"}>{pal.nombre}</span>
+                                <span className={pal.id === (idPalabra + initialId - 1) ? "p p-0 m-0 orange-text fw-bold" : "p p-0 m-0"}>{pal.nombre}</span>
                             </div>)}
                     </div>
                 </Col>

@@ -22,8 +22,8 @@ function CustomNavbar() {
                 <Navbar.Toggle className="me-4" />
                 <Navbar.Collapse className="justify-content-end">
                     <Nav>
-                        <Nav.Link href="/aprende" className={window.location.href.includes("aprende") ? "white-bg p-0 nav-align justify-content-end" : "p-0 nav-align justify-content-end"}>
-                            <h3 className={window.location.href.includes("aprende") ? "orange-text m-0 py-3 p-5" : "m-0 py-3 p-5"} >
+                        <Nav.Link href="/aprende" className={window.location.href.includes("practica") ? "p-0 nav-align justify-content-end" : "white-bg p-0 nav-align justify-content-end"}>
+                            <h3 className={window.location.href.includes("practica") ? "m-0 py-3 p-5" : "orange-text m-0 py-3 p-5"} >
                                 <i className="fa-solid fa-book pe-2"></i>
                                 <span>Aprende</span>
                             </h3>

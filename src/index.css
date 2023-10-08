@@ -214,7 +214,7 @@ body {
 }
 
 .orange-text {
-  color: var(--secondary);
+  color: var(--secondary) !important;
 }
 
 .white-bg {
@@ -251,8 +251,4 @@ body {
 .palabra-selected {
   background-color: rgba(255, 136, 17, 0.1);
   border: none !important;
-}
-
-.secondary-color {
-  color: var(--secondary) !important;
 }
