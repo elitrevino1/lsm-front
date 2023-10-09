@@ -80,18 +80,18 @@ function Leccion() {
             <Row className="m-5 mb-0">
                 <Col xs={12}>
                     <h1>
-                        <i className={showMenu ? "fa-solid fa-xmark pe-4" : "fa-solid fa-bars pe-4"} onClick={() => { setShowMenu(!showMenu) }}></i>
+                        <i className={showMenu ? "fa-solid fa-xmark pe-4 clickable" : "fa-solid fa-bars pe-4 clickable"} onClick={() => { setShowMenu(!showMenu) }}></i>
                         <span>{nombre}</span>
                     </h1>
                 </Col>
             </Row>
             {showMenu && <Row className="ms-5">
                 <Col xs={9} lg={3} className="d-block position-relative">
-                    <div className="leccion-menu shadow-lg">
+                    <div className="leccion-menu shadow-lg clickable">
                         {palabras.map((pal) =>
                             <div className={pal.id === (idPalabra + initialId - 1) ? "p-4 border palabra-selected"
-                                : pal.id - (idPalabra + initialId - 1) === -1 ? "mx-4 py-4"
-                                    : "mx-4 py-4 border-bottom"} key={pal.id}
+                            : pal.id - (idPalabra + initialId - 1) === -1 ? "p-4 hovered"
+                                : "p-4 border-bottom hovered"} key={pal.id}
                                 onClick={() => {
                                     let newId = pal.id - initialId + 1
                                     console.log("n " + pal.id + " " + initialId + " " + newId)
@@ -99,7 +99,7 @@ function Leccion() {
                                     setShowMenu(false);
                                 }}>
                                 <img className="me-3 cover" height={40} width={60} src={`data:image/jpeg;base64,${pal.imagen}`} alt={pal.nombre} />
-                                <span className={pal.id === (idPalabra + initialId - 1) ? "p p-0 m-0 orange-text fw-bold" : "p p-0 m-0"}>{pal.nombre}</span>
+                                <span className={pal.id === (idPalabra + initialId - 1) ? "p p-0 m-0 white-text fw-bold" : "p p-0 m-0"}>{pal.nombre}</span>
                             </div>)}
                     </div>
                 </Col>

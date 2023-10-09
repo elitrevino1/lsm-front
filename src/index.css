@@ -265,3 +265,17 @@ body {
 .white-text {
   color: var(--white) !important;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.palabra-selected {
+  background-color: var(--secondary);
+  border: none !important;
+}
+
+.hovered:hover {
+  font-weight: bold !important;
+  background-color: rgba(255, 136, 17, 0.1);
+}

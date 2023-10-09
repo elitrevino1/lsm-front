@@ -13,6 +13,7 @@ function Practica() {
     const [failure, setFailure] = useState(false);
 
     const [palabra, setPalabra] = useState(null);
+    const [palabraId, setPalabraId] = useState(null);
     const [imagen, setImagen] = useState();
     const [videoLSM, setVideoLSM] = useState();
     const [dynamic, setDynamic] = useState();
@@ -42,7 +43,8 @@ function Practica() {
             try {
                 const response = await api.get(`/random`);
                 setPalabra(response.data.titulo);
-                setImagen(response.data.imagen64)
+                setPalabraId(response.data.señaID);
+                setImagen(response.data.imagen64);
                 setVideoLSM(response.data.video64);
                 if (response.data.dinamico === 1) {
                     setDynamic(true);
@@ -108,9 +110,8 @@ function Practica() {
                 if (!success && palabra !== null) {
                     console.log("hola " + palabra)
                     //let palabra1 = "a"
-                    const response = await api.post(`/process_frame`, { frame, palabra });
+                    const response = await api.post(`/process_frame`, { frame, palabra, palabraId });
                     const data = response.data[0];
-                    //console.log(response.data)
                     if (data === "Correcto") {
                         setSuccess(true);
                         setShowCorrecto(true);
@@ -172,8 +173,42 @@ function Practica() {
 
             if (frames[0] !== null && frames[1] !== null) {
                 console.log(frames);
+                const response = await api.post(`/process_frame_dynamic`, { frames, palabra, palabraId });
+                console.log(response);
+                const poseData = response.data[0];
+                const handData = response.data[1];
 
+                try {
+                let str = "";
+                // eslint-disable-next-line
+                poseData.map((moment, mId) => {
+                    str += "En el momento " + mId + ": \n";
+                    // eslint-disable-next-line
+                    moment.map((point) => {
+                        str += point + "\n";
+                    })
+                    str += "\n";
+                })
 
+                str += "-- POSICIÓN DE MANOS -- \n"
+                // eslint-disable-next-line
+                handData.map((moment, mId) => {
+                    str += "En el momento " + mId + ": \n";
+                    // eslint-disable-next-line
+                    moment.map((point) => {
+                        str += point + "\n";
+                    })
+                    str += "\n";
+                })
+
+                setShowIncorrecto(true);
+                setFailure(true);
+                setError(str);
+                setShowOverlay(true);
+                setShowStartButton(true);
+                } catch (error) {
+                console.error('Error al enviar el frame al servidor:', error);
+                }
             }
 
             //setTimeout(() => requestAnimationFrame(captureDynamicFrame), 3000);
@@ -231,6 +266,7 @@ function Practica() {
 
     const handleStartDynamic = async () => {
 
+        setShowIncorrecto(false);
         setShowStartButton(false);
         setCountdownText("3")
         await delay(1000);
@@ -251,7 +287,7 @@ function Practica() {
                 height={height}
             />}
             {success && <CorrectoAlert show={showCorrecto} />}
-            {failure && showVideo && !success && <IncorrectoAlert error={error} show={showIncorrecto} />}
+            {failure && showVideo && !success && <IncorrectoAlert error={error} show={showIncorrecto} handleClose={() => setShowIncorrecto(false)} />}
             {success || <Modal centered show={showHint} onHide={() => setShowHint(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title className="h3">{palabra} en LSM</Modal.Title>
@@ -310,7 +346,7 @@ function Practica() {
                     </Row>
                     <Row>
                         {showVideo &&
-                            <p className="m-0 mt-3" onClick={handleShowHint}>
+                            <p className="m-0 mt-3 clickable w-auto" onClick={handleShowHint}>
                                 <i className="fa-solid fa-lightbulb pe-2"></i>
                                 <span><u>¿No recuerdas cómo se hace?</u></span>
                             </p>}
