@@ -184,9 +184,14 @@ function Practica() {
                 poseData.map((moment, mId) => {
                     str += "En el momento " + mId + ": \n";
                     // eslint-disable-next-line
-                    moment.map((point) => {
-                        str += point + "\n";
-                    })
+                    if (Array.isArray(moment)) {
+                        moment.map((point) => {
+                            str += point + "\n";
+                        })
+                    }
+                    else {
+                        str += moment + "\n";
+                    }
                     str += "\n";
                 })
 
