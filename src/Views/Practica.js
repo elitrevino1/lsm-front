@@ -147,12 +147,14 @@ function Practica() {
 
     const screenshotDynamicFrames = async (frames) => {
         for (let j = 0; j < numSteps; j++) {
+            let framesI = [];
             let frame = webcamRef.current.getScreenshot();
-            frames.push(frame);
+            framesI.push(frame);
             await delay(100);
-            frames.push(frame);
+            framesI.push(frame);
             await delay(100);
-            frames.push(frame);
+            framesI.push(frame);
+            frames.push(framesI);
             await delay(300);
         }
 
