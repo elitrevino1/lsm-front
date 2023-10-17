@@ -149,7 +149,11 @@ function Practica() {
         for (let j = 0; j < numSteps; j++) {
             let frame = webcamRef.current.getScreenshot();
             frames.push(frame);
-            await delay(500);
+            await delay(100);
+            frames.push(frame);
+            await delay(100);
+            frames.push(frame);
+            await delay(300);
         }
 
         return frames;
@@ -179,40 +183,40 @@ function Practica() {
                 const handData = response.data[1];
 
                 try {
-                let str = "";
-                // eslint-disable-next-line
-                poseData.map((moment, mId) => {
-                    str += "En el momento " + mId + ": \n";
+                    let str = "";
                     // eslint-disable-next-line
-                    if (Array.isArray(moment)) {
+                    poseData.map((moment, mId) => {
+                        str += "En el momento " + mId + ": \n";
+                        // eslint-disable-next-line
+                        if (Array.isArray(moment)) {
+                            moment.map((point) => {
+                                str += point + "\n";
+                            })
+                        }
+                        else {
+                            str += moment + "\n";
+                        }
+                        str += "\n";
+                    })
+
+                    str += "-- POSICIÓN DE MANOS -- \n"
+                    // eslint-disable-next-line
+                    handData.map((moment, mId) => {
+                        str += "En el momento " + mId + ": \n";
+                        // eslint-disable-next-line
                         moment.map((point) => {
                             str += point + "\n";
                         })
-                    }
-                    else {
-                        str += moment + "\n";
-                    }
-                    str += "\n";
-                })
-
-                str += "-- POSICIÓN DE MANOS -- \n"
-                // eslint-disable-next-line
-                handData.map((moment, mId) => {
-                    str += "En el momento " + mId + ": \n";
-                    // eslint-disable-next-line
-                    moment.map((point) => {
-                        str += point + "\n";
+                        str += "\n";
                     })
-                    str += "\n";
-                })
 
-                setShowIncorrecto(true);
-                setFailure(true);
-                setError(str);
-                setShowOverlay(true);
-                setShowStartButton(true);
+                    setShowIncorrecto(true);
+                    setFailure(true);
+                    setError(str);
+                    setShowOverlay(true);
+                    setShowStartButton(true);
                 } catch (error) {
-                console.error('Error al enviar el frame al servidor:', error);
+                    console.error('Error al enviar el frame al servidor:', error);
                 }
             }
 
