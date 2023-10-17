@@ -328,10 +328,11 @@ function Practica() {
                             src={`data:image/jpeg;base64,${imagen}`}
                             alt="Imagen de la seña a realizar"
                             style={{ width: "auto" }}
+                            onClick={handleShowHint}
                         />
                     </Row>
                     <Row className="text-center">
-                        <h1>{palabra}</h1>
+                        <h1 onClick={handleShowHint}>{palabra}</h1>
                     </Row>
                 </Col>
                 <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
