@@ -186,37 +186,141 @@ function Practica() {
 
                 try {
                     let str = "";
+                    let strInicio = ""
+                    let strMedio = ""
+                    let strFinal = ""
                     // eslint-disable-next-line
                     poseData.map((moment, mId) => {
-                        str += "En el momento " + mId + ": \n";
-                        // eslint-disable-next-line
                         if (Array.isArray(moment)) {
-                            moment.map((point) => {
-                                str += point + "\n";
-                            })
+                            for (let i = 0; i < moment.length; i++) {
+                                let point = moment[i];
+                                let keypoint = point[0];
+                                let direction = point[1];
+
+                                if (keypoint === 15 || keypoint === 17 || keypoint === 19 || keypoint === 21) {
+
+                                    if (mId === 0) {
+                                        if (strInicio === "") {
+                                            if (!strInicio.includes(direction)) {
+                                                if (direction === "Abajo" || "Arriba") {
+                                                    strInicio += "Mueve toda la mano para " + point[1];
+                                                } else {
+                                                    strInicio += "Mueve toda la mano para la " + point[1];
+                                                }
+                                            }
+                                        } else {
+                                            if (!strInicio.includes(direction)) {
+                                                if (direction === "Abajo" || "Arriba") {
+                                                    strInicio += " y " + point[1];
+                                                } else {
+                                                    strInicio += " y la " + point[1];
+                                                }
+                                            }
+                                        }
+                                    } else if (mId === (poseData.length - 1)) {
+                                        if (strFinal === "") {
+                                            if (!strFinal.includes(direction)) {
+                                                if (direction === "Abajo" || "Arriba") {
+                                                    strFinal += "Mueve toda la mano para " + point[1];
+                                                } else {
+                                                    strFinal += "Mueve toda la mano para la " + point[1];
+                                                }
+                                            }
+                                        } else {
+                                            if (!strFinal.includes(direction)) {
+                                                if (direction === "Abajo" || "Arriba") {
+                                                    strFinal += " y " + point[1];
+                                                } else {
+                                                    strFinal += " y la " + point[1];
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (strMedio === "") {
+                                            if (!strMedio.includes(direction)) {
+                                                if (direction === "Abajo" || "Arriba") {
+                                                    strMedio += "Mueve toda la mano para " + point[1];
+                                                } else {
+                                                    strMedio += "Mueve toda la mano para la " + point[1];
+                                                }
+                                            }
+                                        } else {
+                                            if (!strMedio.includes(direction)) {
+                                                if (direction === "Abajo" || "Arriba") {
+                                                    strMedio += " y " + point[1];
+                                                } else {
+                                                    strMedio += " y la " + point[1];
+                                                }
+                                            }
+                                        }
+                                    }
+
+
+                                }
+                            }
                         }
-                        else {
-                            str += moment + "\n";
-                        }
-                        str += "\n";
                     })
 
-                    str += "-- POSICIÓN DE MANOS -- \n"
+                    if (strInicio !== "") {
+                        strInicio += "\n"
+                    }
+                    if (strMedio !== "") {
+                        strMedio += "\n"
+                    }
+                    if (strFinal !== "") {
+                        strFinal += "\n"
+                    }
+
                     // eslint-disable-next-line
                     handData.map((moment, mId) => {
-                        str += "En el momento " + mId + ": \n";
-                        // eslint-disable-next-line
-                        moment.map((point) => {
-                            str += point + "\n";
-                        })
-                        str += "\n";
+                        for (let i = 0; i < moment.length; i++) {
+                            let point = moment[i];
+
+                            if (mId === 0) {
+                                if (point !== "Correcto") {
+                                    strInicio += point + "\n";
+                                }
+                            } else if (mId === (poseData.length - 1)) {
+                                if (point !== "Correcto") {
+                                    strFinal += point + "\n";
+                                }
+                            } else {
+                                if (point !== "Correcto") {
+                                    strMedio += point + "\n";
+                                }
+                            }
+                        }
                     })
 
-                    setShowIncorrecto(true);
-                    setFailure(true);
-                    setError(str);
-                    setShowOverlay(true);
-                    setShowStartButton(true);
+                    if (strInicio !== "") {
+                        str += "Al inicio:\n\n" + strInicio;
+                    }
+                    if (strInicio !== "" && strMedio !== "") {
+                        str += "\n---------\n\n";
+                    }
+                    if (strMedio !== "") {
+                        str += "Al medio:\n\n" + strMedio;
+                    }
+                    if ((strMedio !== "" && strFinal !== "") || (strInicio !== "" && strFinal !== "")) {
+                        str += "\n---------\n\n";
+                    }
+                    if (strFinal !== "") {
+                        str += "Al final:\n\n" + strFinal;
+                    }
+
+                    if (str === "") {
+                        setShowCorrecto(true);
+                        setSuccess(true);
+                        setShowVideo(false);
+                        setShowIncorrecto(false);
+                        controller.abort();
+                    } else {
+                        setShowIncorrecto(true);
+                        setFailure(true);
+                        setError(str);
+                        setShowOverlay(true);
+                        setShowStartButton(true);
+                    }
                 } catch (error) {
                     console.error('Error al enviar el frame al servidor:', error);
                 }
