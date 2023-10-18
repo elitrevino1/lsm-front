@@ -17,6 +17,7 @@ function Leccion() {
     const [palabras, setPalabras] = useState([]);
     const [showMenu, setShowMenu] = useState(false)
     const [initialId, setInitialId] = useState(-1);
+    const [dinamico, setDinamico] = useState();
 
     useEffect(() => {
         const getPalabra = async () => {
@@ -27,6 +28,11 @@ function Leccion() {
                 console.log(idPalabra)
                 setDefinicion(response.data.definicion);
                 setVideo(response.data.video64);
+                if (response.data.dinamico === 0) {
+                    setDinamico(false);
+                } else {
+                    setDinamico(true);
+                }
             } catch (err) {
                 if (err.response) {
                     console.log(err.response.data);
@@ -90,8 +96,8 @@ function Leccion() {
                     <div className="leccion-menu shadow-lg clickable">
                         {palabras.map((pal) =>
                             <div className={pal.id === (idPalabra + initialId - 1) ? "p-4 border palabra-selected"
-                            : pal.id - (idPalabra + initialId - 1) === -1 ? "p-4 hovered"
-                                : "p-4 border-bottom hovered"} key={pal.id}
+                                : pal.id - (idPalabra + initialId - 1) === -1 ? "p-4 hovered"
+                                    : "p-4 border-bottom hovered"} key={pal.id}
                                 onClick={() => {
                                     let newId = pal.id - initialId + 1
                                     console.log("n " + pal.id + " " + initialId + " " + newId)
@@ -106,20 +112,19 @@ function Leccion() {
             </Row>}
             <Row className="mx-5 align-items-center" key={idPalabra}>
                 <Col xs={12} lg={7} className="mt-4" style={{ height: "100%" }}>
-                    <video
+                    {dinamico ? <video
                         src={`data:video/mp4;base64,${video}`}
                         width={"100%"}
                         height={"100%"}
                         alt="Cómo hacer la seña"
                         controls="controls"
                         type="video/mp4"
-                    />
-                    {/* <img
+                    /> : <img
                         src={`data:image/jpeg;base64,${video}`}
                         width={"100%"}
                         style={{ height: "30vw" }}
                         alt={"Foto de cómo se hace la seña"}
-                        className="pe-lg-5 cover" /> */}
+                        className="pe-lg-5 cover" />}
                 </Col>
                 <Col xs={12} lg={5} className="mt-4" style={{ height: "100%" }}>
                     <PalabraCard id="palCard" imagen={imagen} palabra={palabra} definicion={definicion} />

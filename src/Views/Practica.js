@@ -403,19 +403,25 @@ function Practica() {
             />}
             {success && <CorrectoAlert show={showCorrecto} />}
             {failure && showVideo && !success && <IncorrectoAlert error={error} show={showIncorrecto} handleClose={() => setShowIncorrecto(false)} />}
-            {success || <Modal centered show={showHint} onHide={() => setShowHint(false)}>
+            {success || <Modal centered size="lg" show={showHint} onHide={() => setShowHint(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title className="h3">{palabra} en LSM</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <video
+                    {dynamic ? <video
                         src={`data:video/mp4;base64,${videoLSM}`}
                         width={"100%"}
                         height={"100%"}
                         alt="Cómo hacer la seña"
                         controls="controls"
                         type="video/mp4"
-                    />
+                    /> : <img
+                        src={`data:image/jpeg;base64,${videoLSM}`}
+                        width={"100%"}
+                        style={{ height: "30vw" }}
+                        alt={"Foto de cómo se hace la seña"}
+                        className="cover" />}
+
                 </Modal.Body>
             </Modal>}
             <Row className="m-5 mb-4">
