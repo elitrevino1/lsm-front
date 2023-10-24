@@ -146,7 +146,7 @@ function Practica() {
     };
 
     const screenshotDynamicFrames = async (frames) => {
-        for (let j = 0; j < numSteps; j++) {
+        /* for (let j = 0; j < numSteps; j++) {
             let framesI = [];
             let frame = webcamRef.current.getScreenshot();
             framesI.push(frame);
@@ -156,6 +156,14 @@ function Practica() {
             framesI.push(frame);
             frames.push(framesI);
             await delay(300);
+        } */
+
+        let frame = webcamRef.current.getScreenshot();
+
+        // se multiplica por 10 porque al tener un delay de 50ms, se están mandando 20fps dentro de un tiempo de medio segundo por paso/momento
+        for (let j = 0; j < numSteps * 10; j++) {
+            frames.push(frame);
+            await delay(50);
         }
 
         return frames;
