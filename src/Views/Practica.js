@@ -6,6 +6,7 @@ import IncorrectoAlert from "../Components/IncorrectoAlert";
 import api from "../api/route.js";
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
+import man from '../Multimedia/man.png'
 
 function Practica() {
 
@@ -187,7 +188,7 @@ function Practica() {
 
             if (frames[0] !== null && frames[1] !== null) {
                 console.log(frames);
-                const response = await api.post(`/process_frame_dynamic`, { frames, palabra, palabraId });
+                const response = await api.post(`/process_frame_dynamic`, { frames, palabra, palabraId, numSteps });
                 console.log(response);
                 const poseData = response.data[0];
                 const handData = response.data[1];
@@ -464,6 +465,11 @@ function Practica() {
                         />}
                         {dynamic && showOverlay &&
                             <div className="overlay-123 p-0 d-flex justify-content-center align-items-center">
+                                <img
+                                    src={man}
+                                    className="overlay-man position-absolute"
+                                    alt="Correct position inside frame"
+                                />
                                 {showStartButton && <Button className="cta-button" onClick={handleStartDynamic}>
                                     <p className="m-0" style={{ color: "var(--text-white)" }}>
                                         Empezar
