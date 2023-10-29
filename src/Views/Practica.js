@@ -177,12 +177,7 @@ function Practica() {
     }
 
     const captureDynamicFrame = async () => {
-        if (success) {
-            setShowVideo(false);
-            setShowIncorrecto(false);
-            controller.abort();
-        }
-        else if (webcamRef.current) {
+        if (webcamRef.current) {
 
             let frames = [];
 
@@ -192,7 +187,7 @@ function Practica() {
                 //console.log(frames);
                 const response = await api.post(`/process_frame_dynamic`, { frames, palabra, palabraId, numSteps });
                 console.log(response);
-                const poseData = response.data[0];
+                const poseData = response.data;
                 //const handData = response.data[1];
 
                 try {
@@ -304,19 +299,19 @@ function Practica() {
                     // })
 
                     if (strInicio !== "") {
-                        str += "Al inicio:\n\n" + strInicio;
+                        str += "Al inicio:\n" + strInicio;
                     }
                     if (strInicio !== "" && strMedio !== "") {
-                        str += "\n---------\n\n";
+                        str += "\n";
                     }
                     if (strMedio !== "") {
-                        str += "Al medio:\n\n" + strMedio;
+                        str += "Al medio:\n" + strMedio;
                     }
                     if ((strMedio !== "" && strFinal !== "") || (strInicio !== "" && strFinal !== "")) {
-                        str += "\n---------\n\n";
+                        str += "\n";
                     }
                     if (strFinal !== "") {
-                        str += "Al final:\n\n" + strFinal;
+                        str += "Al final:\n" + strFinal;
                     }
 
                     if (str === "") {
@@ -379,6 +374,8 @@ function Practica() {
         }
     };
 
+    let index = currentHandPositionIndex + 1;
+
     const isHandPositionCorrect = async () => {
         //console.log("HOLAAA")
         if (webcamRef.current) {
@@ -388,7 +385,6 @@ function Practica() {
                 if (!success && palabra !== null) {
                     //console.log("hola " + palabra)
                     //let palabra1 = "a"
-                    let index = currentHandPositionIndex + 1
                     //console.log(currentIndex, "CURRENT INDEX")
                     //console.log(currentHandPositionIndex)
                     //console.log(index)
@@ -397,15 +393,17 @@ function Practica() {
                     //console.log(response);
                     const data = response.data[0];
                     if (data === "Correcto") {
+                        console.log("ESTE ES EL INDEX EN CORRECTO " + index);
                         setSuccess(true);
                         setShowCorrecto(true);
                         setShowIncorrecto(false);
-                        setCurrentHandPositionIndex(prevIndex => prevIndex + 1);
+                        setCurrentHandPositionIndex(index);
                         console.log(currentHandPositionIndex)
                         setShowOverlay(true);
                         setShowStartButton(true);
                         setCambios(false);
                         setFailure(false);
+                        return
                     }
                     else if (data !== "No hay mano detectada" && !response.data.error && !success) {
                         setFailure(true);
@@ -430,7 +428,7 @@ function Practica() {
     };
 
     useEffect(() => {
-        console.log(currentHandPositionIndex + "Numcambios use efect");
+        console.log(currentHandPositionIndex + " Numcambios use effect");
         //let currentIndex = currentHandPositionIndex
         if (dynamic === false) {
             console.log(dynamic + "dynamic capture frame");
@@ -440,7 +438,6 @@ function Practica() {
                 isHandPositionCorrect()
             } else if (currentHandPositionIndex >= numCambios){ 
                 setShowOverlay(true);
-                setShowStartButton(true);
                 setCambios(false);
                 setCambiosMano(true);
             }
@@ -454,22 +451,28 @@ function Practica() {
 
     const handleStartDynamic = async () => {
         console.log(cambiosMano);
+        setShowVideo(true);
         setShowIncorrecto(false);
         setShowStartButton(false);
-        setCountdownText("3")
-        await delay(1000);
-        setCountdownText("2")
-        await delay(1000);
-        setCountdownText("1")
-        await delay(500);
-        setShowOverlay(false);
-        await delay(500);
+        setSuccess(false);
+        setShowCorrecto(false);
         if (!cambiosMano) {
             console.log("??????")
             setCambios(true)
+            setShowOverlay(false);
             isHandPositionCorrect();
         }else {
             console.log("hola?")
+            setShowIncorrecto(false);
+            setShowStartButton(false);
+            setCountdownText("3")
+            await delay(1000);
+            setCountdownText("2")
+            await delay(1000);
+            setCountdownText("1")
+            await delay(500);
+            setShowOverlay(false);
+            await delay(500);
             captureDynamicFrame();
         }
     }
@@ -534,12 +537,12 @@ function Practica() {
                             className="p-0 position-relative"
                         />}
                         {dynamic && showOverlay &&
-                            <div className="overlay-123 p-0 d-flex justify-content-center align-items-center">
-                                <img
+                            <div className={`${showVideo && "overlay-123"} p-0 d-flex justify-content-center align-items-center mh-45`}>
+                                {showVideo && <img
                                     src={man}
                                     className="overlay-man position-absolute"
                                     alt="Correct position inside frame"
-                                />
+                                />}
                                 {showStartButton && <Button className="cta-button" onClick={handleStartDynamic}>
                                     <p className="m-0" style={{ color: "var(--text-white)" }}>
                                         Empezar
