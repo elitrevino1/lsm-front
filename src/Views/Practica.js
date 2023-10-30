@@ -17,7 +17,7 @@ function Practica() {
     const [palabraId, setPalabraId] = useState(null);
     const [imagen, setImagen] = useState();
     const [videoLSM, setVideoLSM] = useState();
-    const [dynamic, setDynamic] = useState();
+    const [dynamic, setDynamic] = useState(false);
     const [numSteps, setNumSteps] = useState();
     const [numCambios, setNumCambios] = useState();
     const [cambios, setCambios] = useState(false);
@@ -510,7 +510,13 @@ function Practica() {
                 <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
                     <Row className="text-center">
                         <h2 className="fw-normal">
-                            {success ? "¡EXCELENTE! Has realizado:" :
+                            {dynamic && currentHandPositionIndex === 0 ? `Realiza el paso: ${currentHandPositionIndex + 1}`:
+                                cambios && dynamic ? `Realiza el paso: ${currentHandPositionIndex + 1}`:
+                                dynamic && currentHandPositionIndex < numCambios ?  `Realiza el paso: ${currentHandPositionIndex + 1}`:
+                                !cambios && dynamic && failure ? "Vuelve a intentar":
+                                cambios && dynamic && success ? "¡EXCELENTE! Has realizado:" :
+                                !cambios && dynamic ? 'Realiza el movimiento completo':
+                                success ? "¡EXCELENTE! Has realizado:" :
                                 failure ? "Vuelve a intentar" :
                                     "Realiza la siguiente seña:"}
                         </h2>
