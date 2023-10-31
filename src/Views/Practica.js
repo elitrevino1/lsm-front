@@ -209,9 +209,9 @@ function Practica() {
                                         if (strInicio === "") {
                                             if (!strInicio.includes(direction)) {
                                                 if (direction === "Abajo" || "Arriba") {
-                                                    strInicio += "Mueve toda la mano para " + point[1];
+                                                    strInicio += "Mueve toda el brazo para " + point[1];
                                                 } else {
-                                                    strInicio += "Mueve toda la mano para la " + point[1];
+                                                    strInicio += "Mueve toda el brazo para la " + point[1];
                                                 }
                                             }
                                         } else {
@@ -227,9 +227,9 @@ function Practica() {
                                         if (strFinal === "") {
                                             if (!strFinal.includes(direction)) {
                                                 if (direction === "Abajo" || "Arriba") {
-                                                    strFinal += "Mueve toda la mano para " + point[1];
+                                                    strFinal += "Mueve toda el brazo para " + point[1];
                                                 } else {
-                                                    strFinal += "Mueve toda la mano para la " + point[1];
+                                                    strFinal += "Mueve toda el brazo para la " + point[1];
                                                 }
                                             }
                                         } else {
@@ -245,9 +245,9 @@ function Practica() {
                                         if (strMedio === "") {
                                             if (!strMedio.includes(direction)) {
                                                 if (direction === "Abajo" || "Arriba") {
-                                                    strMedio += "Mueve toda la mano para " + point[1];
+                                                    strMedio += "Mueve toda el brazo para " + point[1];
                                                 } else {
-                                                    strMedio += "Mueve toda la mano para la " + point[1];
+                                                    strMedio += "Mueve toda el brazo para la " + point[1];
                                                 }
                                             }
                                         } else {
@@ -403,6 +403,7 @@ function Practica() {
                         setShowStartButton(true);
                         setCambios(false);
                         setFailure(false);
+                        setShowVideo(false);
                         return
                     }
                     else if (data !== "No hay mano detectada" && !response.data.error && !success) {
@@ -465,6 +466,7 @@ function Practica() {
             console.log("hola?")
             setShowIncorrecto(false);
             setShowStartButton(false);
+            setShowVideo(true);
             setCountdownText("3")
             await delay(1000);
             setCountdownText("2")
@@ -570,11 +572,14 @@ function Practica() {
             </Row>
             <Row className="mx-5 mb-5">
                 <Col className="col-auto ms-auto">
-                    <Button className={success ? "cta-button" : "non-cta-button"} onClick={handleClick}>
-                        <p className={success ? "m-0 white-text" : "m-0 orange-text"} >
-                            {success ? "Siguiente" : "Saltar"}
+                    <Button className={dynamic && !cambios && success ? "cta-button" :
+                        !dynamic && success ? "cta-button" : "non-cta-button"} onClick={handleClick}>
+                        <p className={dynamic && !cambios && success ? "m-0 white-text" :
+                            !dynamic && success ? "m-0 white-text" : "m-0 orange-text"} >
+                            {dynamic && !cambios && success ? "Siguiente" : 
+                            !dynamic && success ? "Siguiente" : "Saltar"}
                         </p>
-                    </Button>
+             </Button>
                 </Col>
             </Row>
         </Container>
