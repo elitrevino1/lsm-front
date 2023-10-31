@@ -144,7 +144,7 @@ function Practica() {
                 console.error('Error al enviar el frame al servidor:', error);
             }
 
-            setTimeout(() => requestAnimationFrame(captureFrame), 700);
+            setTimeout(() => requestAnimationFrame(captureFrame), 1400);
         }
     };
 
@@ -209,9 +209,9 @@ function Practica() {
                                         if (strInicio === "") {
                                             if (!strInicio.includes(direction)) {
                                                 if (direction === "Abajo" || "Arriba") {
-                                                    strInicio += "Mueve toda el brazo para " + point[1];
+                                                    strInicio += "Mueve el brazo para " + point[1];
                                                 } else {
-                                                    strInicio += "Mueve toda el brazo para la " + point[1];
+                                                    strInicio += "Mueve el brazo para la " + point[1];
                                                 }
                                             }
                                         } else {
@@ -227,9 +227,9 @@ function Practica() {
                                         if (strFinal === "") {
                                             if (!strFinal.includes(direction)) {
                                                 if (direction === "Abajo" || "Arriba") {
-                                                    strFinal += "Mueve toda el brazo para " + point[1];
+                                                    strFinal += "Mueve el brazo para " + point[1];
                                                 } else {
-                                                    strFinal += "Mueve toda el brazo para la " + point[1];
+                                                    strFinal += "Mueve el brazo para la " + point[1];
                                                 }
                                             }
                                         } else {
@@ -245,9 +245,9 @@ function Practica() {
                                         if (strMedio === "") {
                                             if (!strMedio.includes(direction)) {
                                                 if (direction === "Abajo" || "Arriba") {
-                                                    strMedio += "Mueve toda el brazo para " + point[1];
+                                                    strMedio += "Mueve el brazo para " + point[1];
                                                 } else {
-                                                    strMedio += "Mueve toda el brazo para la " + point[1];
+                                                    strMedio += "Mueve el brazo para la " + point[1];
                                                 }
                                             }
                                         } else {
@@ -422,7 +422,7 @@ function Practica() {
                 console.error('Error al enviar el frame al servidor:', error);
             }
 
-            setTimeout(() => isHandPositionCorrect(captureFrame), 700);
+            setTimeout(() => isHandPositionCorrect(captureFrame), 1400);
 
         }
         return false;
@@ -433,18 +433,18 @@ function Practica() {
         //let currentIndex = currentHandPositionIndex
         if (dynamic === false) {
             console.log(dynamic + "dynamic capture frame");
-            setTimeout(() => captureFrame(), 700);
-        } else if(dynamic){
+            setTimeout(() => captureFrame(), 1400);
+        } else if (dynamic) {
             if (currentHandPositionIndex < numCambios && cambios) {
                 isHandPositionCorrect()
-            } else if (currentHandPositionIndex >= numCambios){ 
+            } else if (currentHandPositionIndex >= numCambios) {
                 setShowOverlay(true);
                 setCambios(false);
                 setCambiosMano(true);
             }
         }//eslint-disable-next-line
     }, [success, palabra, dynamic, currentHandPositionIndex, cambios]);
-    
+
 
     const handleClick = () => {
         window.location.reload();
@@ -462,7 +462,7 @@ function Practica() {
             setCambios(true)
             setShowOverlay(false);
             isHandPositionCorrect();
-        }else {
+        } else {
             console.log("hola?")
             setShowIncorrecto(false);
             setShowStartButton(false);
@@ -512,15 +512,15 @@ function Practica() {
                 <Col xs={12} lg={6} style={{ height: "100%" }} className="mt-5">
                     <Row className="text-center">
                         <h2 className="fw-normal">
-                            {dynamic && currentHandPositionIndex === 0 ? `Realiza el paso: ${currentHandPositionIndex + 1}`:
-                                cambios && dynamic ? `Realiza el paso: ${currentHandPositionIndex + 1}`:
-                                dynamic && currentHandPositionIndex < numCambios ?  `Realiza el paso: ${currentHandPositionIndex + 1}`:
-                                !cambios && dynamic && failure ? "Vuelve a intentar":
-                                cambios && dynamic && success ? "¡EXCELENTE! Has realizado:" :
-                                !cambios && dynamic ? 'Realiza el movimiento completo':
-                                success ? "¡EXCELENTE! Has realizado:" :
-                                failure ? "Vuelve a intentar" :
-                                    "Realiza la siguiente seña:"}
+                            {dynamic && currentHandPositionIndex === 0 ? `Realiza el paso: ${currentHandPositionIndex + 1}` :
+                                cambios && dynamic ? `Realiza el paso: ${currentHandPositionIndex + 1}` :
+                                    dynamic && currentHandPositionIndex < numCambios ? `Realiza el paso: ${currentHandPositionIndex + 1}` :
+                                        !cambios && dynamic && failure ? "Vuelve a intentar" :
+                                            cambios && dynamic && success ? "¡EXCELENTE! Has realizado:" :
+                                                !cambios && dynamic ? 'Realiza el movimiento completo' :
+                                                    success ? "¡EXCELENTE! Has realizado:" :
+                                                        failure ? "Vuelve a intentar" :
+                                                            "Realiza la siguiente seña:"}
                         </h2>
                     </Row>
                     <Row className="p-4">
@@ -576,10 +576,10 @@ function Practica() {
                         !dynamic && success ? "cta-button" : "non-cta-button"} onClick={handleClick}>
                         <p className={dynamic && !cambios && success ? "m-0 white-text" :
                             !dynamic && success ? "m-0 white-text" : "m-0 orange-text"} >
-                            {dynamic && !cambios && success ? "Siguiente" : 
-                            !dynamic && success ? "Siguiente" : "Saltar"}
+                            {dynamic && !cambios && success ? "Siguiente" :
+                                !dynamic && success ? "Siguiente" : "Saltar"}
                         </p>
-             </Button>
+                    </Button>
                 </Col>
             </Row>
         </Container>
