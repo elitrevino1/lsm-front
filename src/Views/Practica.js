@@ -6,7 +6,7 @@ import IncorrectoAlert from "../Components/IncorrectoAlert";
 import api from "../api/route.js";
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
-import man from '../Multimedia/man.png'
+import overlay from '../Multimedia/overlay4.png'
 
 function Practica() {
 
@@ -545,10 +545,10 @@ function Practica() {
                             className="p-0 position-relative"
                         />}
                         {dynamic && showOverlay &&
-                            <div className={`${showVideo && "overlay-123"} p-0 d-flex justify-content-center align-items-center mh-45`}>
+                            <div className={`${showVideo && "div-overlay"} p-0 d-flex justify-content-center align-items-center mh-45`}>
                                 {showVideo && <img
-                                    src={man}
-                                    className="overlay-man position-absolute"
+                                    src={overlay}
+                                    className="position-absolute overlay-man-img"
                                     alt="Correct position inside frame"
                                 />}
                                 {showStartButton && <Button className="cta-button" onClick={handleStartDynamic}>
