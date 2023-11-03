@@ -556,9 +556,9 @@ function Practica() {
                                         Empezar
                                     </p>
                                 </Button>}
-                                {showStartButton || <h3 className="h1 m-0 white-text">
+                                {showStartButton || <h1 className="m-0 white-text">
                                     {countdownText}
-                                </h3>}
+                                </h1>}
                             </div>}
                     </Row>
                     <Row>
