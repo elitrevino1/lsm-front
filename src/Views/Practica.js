@@ -6,7 +6,7 @@ import IncorrectoAlert from "../Components/IncorrectoAlert";
 import api from "../api/route.js";
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
-import overlay from '../Multimedia/overlay4.png'
+import overlay from '../Multimedia/overlay5.png'
 
 function Practica() {
 
@@ -556,7 +556,7 @@ function Practica() {
                                         Empezar
                                     </p>
                                 </Button>}
-                                {showStartButton || <h3 className="m-0 white-text">
+                                {showStartButton || <h3 className="h1 m-0 white-text">
                                     {countdownText}
                                 </h3>}
                             </div>}
