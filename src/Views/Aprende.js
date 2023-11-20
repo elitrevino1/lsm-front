@@ -26,7 +26,6 @@ function Aprende() {
                 }
                 );
                 setLecciones(arr);
-                console.log(arr);
             } catch (err) {
                 if (err.response) {
                     console.log(err.response.data);

@@ -52,14 +52,12 @@ function Practica() {
                 setPalabraId(response.data.señaID);
                 setImagen(response.data.imagen64);
                 setVideoLSM(response.data.video64);
-                console.log(response.data)
                 if (response.data.dinamico === 1) {
                     setDynamic(true);
                     setShowOverlay(true);
                     setNumSteps(response.data.pasos);
                     setNumCambios(response.data.cambios);
                 }
-                console.log(response.data.titulo);
             } catch (err) {
                 if (err.response) {
                     console.log(err.response.data);
@@ -107,19 +105,15 @@ function Practica() {
         else if (webcamRef.current) {
             const frame = webcamRef.current.getScreenshot();
             // Envía el frame al servidor Flask
-            //console.log(frame);
 
             try {
                 if (!success && palabra !== null) {
-                    console.log("hola " + palabra + "capture frame")
-                    //let palabra1 = "a"
                     const response = await api.post(`/process_frame`, { frame, palabra, palabraId });
                     const data = response.data[0];
                     if (data === "Correcto") {
                         setSuccess(true);
                         setShowCorrecto(true);
                         setShowIncorrecto(false);
-                        //setKey(key);
                         setFailure(false);
                         let stream = webcamRef.video.srcObject;
                         const tracks = stream.getTracks();
@@ -130,10 +124,8 @@ function Practica() {
                     else if (data !== "No hay mano detectada" && !response.data.error && !success) {
                         setFailure(true);
                         let str = "";
-                        //console.log(response.data)
                         // eslint-disable-next-line
                         response.data.map((tuple) => {
-                            //console.log(tuple)
                             str += tuple + "\n";
                         });
                         setError(str);
@@ -149,17 +141,6 @@ function Practica() {
     };
 
     const screenshotDynamicFrames = async (frames) => {
-        /* for (let j = 0; j < numSteps; j++) {
-            let framesI = [];
-            let frame = webcamRef.current.getScreenshot();
-            framesI.push(frame);
-            await delay(100);
-            framesI.push(frame);
-            await delay(100);
-            framesI.push(frame);
-            frames.push(framesI);
-            await delay(300);
-        } */
 
         let frame = webcamRef.current.getScreenshot();
 
@@ -184,11 +165,8 @@ function Practica() {
             frames = await screenshotDynamicFrames(frames);
 
             if (frames[0] !== null && frames[1] !== null) {
-                //console.log(frames);
                 const response = await api.post(`/process_frame_dynamic`, { frames, palabra, palabraId, numSteps });
-                console.log(response);
                 const poseData = response.data;
-                //const handData = response.data[1];
 
                 try {
                     let str = "";
@@ -277,27 +255,6 @@ function Practica() {
                         strFinal += "\n"
                     }
 
-                    // eslint-disable-next-line
-                    // handData.map((moment, mId) => {
-                    //     for (let i = 0; i < moment.length; i++) {
-                    //         let point = moment[i];
-
-                    //         if (mId === 0) {
-                    //             if (point !== "Correcto") {
-                    //                 strInicio += point + "\n";
-                    //             }
-                    //         } else if (mId === (poseData.length - 1)) {
-                    //             if (point !== "Correcto") {
-                    //                 strFinal += point + "\n";
-                    //             }
-                    //         } else {
-                    //             if (point !== "Correcto") {
-                    //                 strMedio += point + "\n";
-                    //             }
-                    //         }
-                    //     }
-                    // })
-
                     if (strInicio !== "") {
                         str += "Al inicio:\n" + strInicio;
                     }
@@ -331,74 +288,23 @@ function Practica() {
                     console.error('Error al enviar el frame al servidor:', error);
                 }
             }
-
-            //setTimeout(() => requestAnimationFrame(captureDynamicFrame), 3000);
-
-            /* try {
-                if (!success && palabra !== null) {
-                    console.log("hola " + palabra)
-                    //let palabra1 = "a"
-                    const response = await api.post(`/process_frame`, { frame, palabra });
-                    const data = response.data[0];
-                    //console.log(response.data)
-                    if (data === "Correcto") {
-                        setSuccess(true);
-                        setShowCorrecto(true);
-                        setShowIncorrecto(false);
-                        //setKey(key);
-                        setFailure(false);
-                        let stream = webcamRef.video.srcObject;
-                        const tracks = stream.getTracks();
-
-                        tracks.forEach(track => track.stop());
-                        webcamRef.video.srcObject = null;
-                    }
-                    else if (data !== "No hay mano detectada" && !response.data.error && !success) {
-                        setFailure(true);
-                        let str = "";
-                        //console.log(response.data)
-                        // eslint-disable-next-line
-                        response.data.map((tuple) => {
-                            //console.log(tuple)
-                            str += tuple + "\n";
-                        });
-                        setError(str);
-                        if (!success) { setShowIncorrecto(true); }
-                    }
-                }
-            } catch (error) {
-                console.error('Error al enviar el frame al servidor:', error);
-            }
-
-            setTimeout(() => requestAnimationFrame(captureFrame), 700); */
         }
     };
 
     let index = currentHandPositionIndex + 1;
 
     const isHandPositionCorrect = async () => {
-        //console.log("HOLAAA")
         if (webcamRef.current) {
             const frame = webcamRef.current.getScreenshot();
-
             try {
                 if (!success && palabra !== null) {
-                    //console.log("hola " + palabra)
-                    //let palabra1 = "a"
-                    //console.log(currentIndex, "CURRENT INDEX")
-                    //console.log(currentHandPositionIndex)
-                    //console.log(index)
-                    //const response = await api.post(`/process_frame_dynamic_hand`, { frame, palabra, index });
                     const response = await api.post(`/process_frame_dynamic_hand`, { frame, palabra, palabraId, index });
-                    //console.log(response);
                     const data = response.data[0];
                     if (data === "Correcto") {
-                        console.log("ESTE ES EL INDEX EN CORRECTO " + index);
                         setSuccess(true);
                         setShowCorrecto(true);
                         setShowIncorrecto(false);
                         setCurrentHandPositionIndex(index);
-                        console.log(currentHandPositionIndex)
                         setShowOverlay(true);
                         setShowStartButton(true);
                         setCambios(false);
@@ -423,16 +329,13 @@ function Practica() {
             }
 
             setTimeout(() => isHandPositionCorrect(captureFrame), 1400);
-
         }
         return false;
     };
 
     useEffect(() => {
-        console.log(currentHandPositionIndex + " Numcambios use effect");
         //let currentIndex = currentHandPositionIndex
         if (dynamic === false) {
-            console.log(dynamic + "dynamic capture frame");
             setTimeout(() => captureFrame(), 1400);
         } else if (dynamic) {
             if (currentHandPositionIndex < numCambios && cambios) {
@@ -451,19 +354,16 @@ function Practica() {
     }
 
     const handleStartDynamic = async () => {
-        console.log(cambiosMano);
         setShowVideo(true);
         setShowIncorrecto(false);
         setShowStartButton(false);
         setSuccess(false);
         setShowCorrecto(false);
         if (!cambiosMano) {
-            console.log("??????")
             setCambios(true)
             setShowOverlay(false);
             isHandPositionCorrect();
         } else {
-            console.log("hola?")
             setShowIncorrecto(false);
             setShowStartButton(false);
             setShowVideo(true);

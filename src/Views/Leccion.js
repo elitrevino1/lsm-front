@@ -25,7 +25,6 @@ function Leccion() {
                 const response = await api.get(`/lecciones/${id}/${idPalabra}`);
                 setImagen(response.data.imagen64);
                 setPalabra(response.data.titulo);
-                console.log(idPalabra)
                 setDefinicion(response.data.definicion);
                 setVideo(response.data.video64);
                 if (response.data.dinamico === 0) {
@@ -63,7 +62,6 @@ function Leccion() {
                 }
                 );
                 setPalabras(arr);
-                console.log(arr)
                 if (initialId === -1) {
                     setInitialId(arr[0].id);
                 }
@@ -100,7 +98,6 @@ function Leccion() {
                                     : "p-4 border-bottom hovered"} key={pal.id}
                                 onClick={() => {
                                     let newId = pal.id - initialId + 1
-                                    console.log("n " + pal.id + " " + initialId + " " + newId)
                                     setIdPalabra(idPalabra => newId);
                                     setShowMenu(false);
                                 }}>
