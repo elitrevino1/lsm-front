@@ -56,13 +56,13 @@ h2,
 
 h3,
 .h3 {
-  font-family: var(--inter);
-  font-style: var(--fs-normal);
-  font-weight: var(--fw-bold);
-  font-size: var(--size1-17);
-  line-height: var(--linespace-23);
-  letter-spacing: var(--charspace-0);
-  color: var(--black);
+  font-family: var(--inter) !important;
+  font-style: var(--fs-normal) !important;
+  font-weight: var(--fw-bold) !important;
+  font-size: var(--size1-17) !important;
+  line-height: var(--linespace-23) !important;
+  letter-spacing: var(--charspace-0) !important;
+  color: var(--black) !important;
 }
 
 h4,
@@ -214,7 +214,7 @@ body {
 }
 
 .orange-text {
-  color: var(--secondary);
+  color: var(--secondary) !important;
 }
 
 .white-bg {
@@ -233,4 +233,77 @@ body {
 
 .cover {
   object-fit: cover;
+}
+
+.leccion-menu {
+  width: 100%;
+  height: 60vh;
+  background-color: var(--white)
+    /* rgb(247, 247, 247) */
+  ;
+  /* box-shadow: 4px 10px 5px rgba(0, 0, 0, 0.3), -4px 10px 5px rgba(0, 0, 0, 0.3); */
+  position: absolute;
+  z-index: 100;
+  border-radius: 0.5rem;
+  overflow-y: scroll;
+}
+
+.palabra-selected {
+  background-color: rgba(255, 136, 17, 0.1);
+  border: none !important;
+}
+
+.overlay-123 {
+  width: 100%;
+  height: 99%;
+  background-color: rgba(57, 30, 4, 0.8);
+  position: absolute;
+  z-index: 100;
+  top: 0;
+}
+
+.div-overlay {
+  width: 100%;
+  height: 99%;
+  position: absolute;
+  z-index: 100;
+  top: 0;
+}
+
+.overlay-man {
+  object-fit: cover;
+  height: 80%;
+  z-index: -1;
+  filter: invert(1);
+  opacity: 0.3;
+  top: 19%;
+}
+
+.overlay-man-img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.white-text {
+  color: var(--white) !important;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.palabra-selected {
+  background-color: var(--secondary);
+  border: none !important;
+}
+
+.hovered:hover {
+  font-weight: bold !important;
+  background-color: rgba(255, 136, 17, 0.1);
+}
+
+.mh-45 {
+  min-height: 45vh;
 }

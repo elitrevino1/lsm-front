@@ -3,11 +3,11 @@ import { Alert } from "react-bootstrap";
 
 function IncorrectoAlert(props) {
 
-    const [show, setShow] = useState(props.show);
+   //const [show, setShow] = useState(props.show);
 
-    return (
-        <div style={{ position: "absolute", top: "9vh", right: "1vw", zIndex: 999 }}>
-            <Alert show={show} variant="danger" onClose={() => setShow(false)} dismissible className="red-alert px-4">
+   return (
+    <div style={{ position: "absolute", top: "9vh", right: "1vw", zIndex: 999 }}>
+        <Alert show={props.show} variant="danger" onClose={props.handleClose} dismissible className="red-alert px-4">
                 <Alert.Heading>
                     <h1 className="red-text">
                         <i className="fa-solid fa-circle-xmark pe-3"></i>
