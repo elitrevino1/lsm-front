@@ -13,6 +13,8 @@ function Practica() {
     const [success, setSuccess] = useState(false);
     const [failure, setFailure] = useState(false);
 
+    const [successDynamic, setSuccessDynamic] = useState(false);
+
     const [palabra, setPalabra] = useState(null);
     const [palabraId, setPalabraId] = useState(null);
     const [imagen, setImagen] = useState();
@@ -274,6 +276,7 @@ function Practica() {
                     if (str === "") {
                         setShowCorrecto(true);
                         setSuccess(true);
+                        setSuccessDynamic(true);
                         setShowVideo(false);
                         setShowIncorrecto(false);
                         controller.abort();
@@ -358,6 +361,7 @@ function Practica() {
         setShowIncorrecto(false);
         setShowStartButton(false);
         setSuccess(false);
+        setSuccessDynamic(false);
         setShowCorrecto(false);
         if (!cambiosMano) {
             setCambios(true)
@@ -472,11 +476,11 @@ function Practica() {
             </Row>
             <Row className="mx-5 mb-5">
                 <Col className="col-auto ms-auto">
-                    <Button className={dynamic && !cambios && success ? "cta-button" :
+                    <Button className={dynamic && successDynamic ? "cta-button" :
                         !dynamic && success ? "cta-button" : "non-cta-button"} onClick={handleClick}>
-                        <p className={dynamic && !cambios && success ? "m-0 white-text" :
+                        <p className={dynamic && successDynamic ? "m-0 white-text" :
                             !dynamic && success ? "m-0 white-text" : "m-0 orange-text"} >
-                            {dynamic && !cambios && success ? "Siguiente" :
+                            {dynamic && successDynamic ? "Siguiente" :
                                 !dynamic && success ? "Siguiente" : "Saltar"}
                         </p>
                     </Button>
